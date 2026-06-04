@@ -1,0 +1,6 @@
+{
+  "name": "TRAK",
+  "description": "A modern traffic law assistant for checking fines, contesting violations, and calculating driver risk scores.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

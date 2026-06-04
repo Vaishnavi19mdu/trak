@@ -1,0 +1,109 @@
+{
+  "state": "Tamil Nadu",
+  "violations": [
+    {
+      "id": "no_helmet",
+      "name": "No Helmet",
+      "fine": 1000,
+      "section": "MV Act 194D",
+      "points": 2,
+      "keywords": ["helmet", "no helmet"]
+    },
+    {
+      "id": "overspeed",
+      "name": "Overspeeding",
+      "fine": 1000,
+      "section": "MV Act 183",
+      "points": 3,
+      "keywords": ["speed", "overspeed"]
+    },
+    {
+      "id": "signal_jump",
+      "name": "Signal Jumping",
+      "fine": 1000,
+      "section": "MV Act 177",
+      "points": 3,
+      "keywords": ["signal", "red light"]
+    },
+    {
+      "id": "drunk_drive",
+      "name": "Drunk Driving",
+      "fine": 10000,
+      "section": "MV Act 185",
+      "points": 6,
+      "keywords": ["drunk", "alcohol"]
+    },
+    {
+      "id": "triple_riding",
+      "name": "Triple Riding",
+      "fine": 1000,
+      "section": "MV Act 128",
+      "points": 2,
+      "keywords": ["triple", "three people"]
+    },
+    {
+      "id": "no_seatbelt",
+      "name": "No Seatbelt",
+      "fine": 1000,
+      "section": "MV Act 194B",
+      "points": 1,
+      "keywords": ["seatbelt", "belt"]
+    },
+    {
+      "id": "wrong_parking",
+      "name": "Wrong Parking",
+      "fine": 500,
+      "section": "MV Act 122",
+      "points": 1,
+      "keywords": ["parking", "parked"]
+    },
+    {
+      "id": "mobile_driving",
+      "name": "Mobile use while driving",
+      "fine": 5000,
+      "section": "MV Act 184",
+      "points": 4,
+      "keywords": ["mobile", "phone", "calling"]
+    },
+    {
+      "id": "no_insurance",
+      "name": "No Insurance",
+      "fine": 2000,
+      "section": "MV Act 196",
+      "points": 2,
+      "keywords": ["insurance"]
+    },
+    {
+      "id": "expired_license",
+      "name": "Expired License",
+      "fine": 5000,
+      "section": "MV Act 3/181",
+      "points": 3,
+      "keywords": ["expired license", "no license"]
+    },
+    {
+      "id": "no_puc",
+      "name": "No PUC Certificate",
+      "fine": 1000,
+      "section": "MV Act 190(2)",
+      "points": 2,
+      "keywords": ["puc", "pollution"]
+    },
+    {
+      "id": "dangerous_driving",
+      "name": "Dangerous Driving",
+      "fine": 5000,
+      "section": "MV Act 184",
+      "points": 5,
+      "keywords": ["dangerous", "rash"]
+    },
+    {
+      "id": "no_plate",
+      "name": "No Number Plate",
+      "fine": 500,
+      "section": "MV Act 192",
+      "points": 2,
+      "keywords": ["plate", "number plate"]
+    }
+  ]
+}

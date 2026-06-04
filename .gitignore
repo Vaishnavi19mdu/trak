@@ -1,0 +1,12 @@
+# covers both
+node_modules/
+venv/
+__pycache__/
+*.pyc
+.env*
+!.env.example
+*.db
+dist/
+.next/
+*.log
+.DS_Store
