@@ -10,20 +10,18 @@ import models
 
 SECRET_KEY = os.getenv("SECRET_KEY", "trak-super-secret-key-change-this-later")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 1 week
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto", bcrypt__rounds=12, bcrypt__ident="2b")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
 def hash_password(password: str) -> str:
-    truncated = password.encode("utf-8")[:72]
-    return pwd_context.hash(truncated)
+    return pwd_context.hash(password)
 
 
 def verify_password(plain: str, hashed: str) -> bool:
-    truncated = plain.encode("utf-8")[:72]
-    return pwd_context.verify(truncated, hashed)
+    return pwd_context.verify(plain, hashed)
 
 
 def create_access_token(user_id: int) -> str:
@@ -33,7 +31,6 @@ def create_access_token(user_id: int) -> str:
 
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
-    """Dependency — attach this to any route that requires login."""
     credentials_error = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid or expired token",
