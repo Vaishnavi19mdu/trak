@@ -1,48 +1,35 @@
-import os
-from datetime import datetime, timedelta
-from jose import JWTError, jwt
-from passlib.context import CryptContext
-from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
-import models
+import models, schemas, auth
 
-SECRET_KEY = os.getenv("SECRET_KEY", "trak-super-secret-key-change-this-later")
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+router = APIRouter(prefix="/auth", tags=["Auth"])
 
 
-def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+@router.post("/register", response_model=schemas.TokenResponse)
+def register(body: schemas.RegisterRequest, db: Session = Depends(get_db)):
+    existing = db.query(models.User).filter(models.User.email == body.email).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Email already registered")
 
-
-def verify_password(plain: str, hashed: str) -> bool:
-    return pwd_context.verify(plain, hashed)
-
-
-def create_access_token(user_id: int) -> str:
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    payload = {"sub": str(user_id), "exp": expire}
-    return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
-
-
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
-    credentials_error = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Invalid or expired token",
-        headers={"WWW-Authenticate": "Bearer"},
+    user = models.User(
+        email=body.email,
+        full_name=body.full_name,
+        hashed_password=auth.hash_password(body.password),
     )
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        user_id = int(payload.get("sub"))
-    except (JWTError, TypeError):
-        raise credentials_error
+    db.add(user)
+    db.commit()
+    db.refresh(user)
 
-    user = db.query(models.User).filter(models.User.id == user_id).first()
-    if not user:
-        raise credentials_error
-    return user
+    token = auth.create_access_token(user.id)
+    return {"access_token": token}
+
+
+@router.post("/login", response_model=schemas.TokenResponse)
+def login(body: schemas.LoginRequest, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.email == body.email).first()
+    if not user or not auth.verify_password(body.password, user.hashed_password):
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+
+    token = auth.create_access_token(user.id)
+    return {"access_token": token}
