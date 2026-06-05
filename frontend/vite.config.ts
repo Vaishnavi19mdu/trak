@@ -18,8 +18,8 @@ export default defineConfig(({mode}) => {
     server: {
       hmr: process.env.DISABLE_HMR !== 'true',
     },
-    preview: {
-      allowedHosts: ['trak-1-kg9a.onrender.com'],
-    },
+   preview: {
+  allowedHosts: true,
+},
   };
 });
